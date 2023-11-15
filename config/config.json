@@ -1,3 +1,18 @@
 {
-    "test": "test2"
+    "traffic_light": {
+        "lights": [
+            {
+                "color": "green",
+                "status": 2
+            },
+            {
+                "color": "yellow",
+                "status": 1
+            },
+            {
+                "color": "red",
+                "status": 0
+            }
+        ]
+    }
 }

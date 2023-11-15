@@ -1,10 +1,17 @@
 import json
+from types import SimpleNamespace
 
-def getConfig(path):
+class config:
+
+    def __init__(self, config) -> None:
+        self.config = config
+
+def getConfigOnFile(path):
     try:
-        file = open(path)
-        config = json.load(file)
-        file.close()
+        with open(path) as user_file:
+            file_contents = user_file.read()
+        config = json.loads(file_contents, object_hook=lambda d: SimpleNamespace(**d))
+        user_file.close()
         return config, None
-    except:
-        return None, "unable to get config"
+    except ImportError:
+        return None, "unable to get config: "
