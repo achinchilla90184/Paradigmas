@@ -19,7 +19,7 @@
         "vias": [
             {
                 "name": "A",
-                "path": "./data-source/viaA.mp4"
+                "path": "./data-source/viaA.avi"
             },
             {
                 "name": "B",
