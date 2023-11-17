@@ -26,7 +26,7 @@ def pega_centro(x, y, w, h):
     return cx, cy
 
 # video source input
-cap = cv2.VideoCapture('./testing/DeteccionVehiculo/video2.mp4')
+cap = cv2.VideoCapture('./testing/DeteccionVehiculo/viaA.mp4')
 
 # Necesita pip install opencv-contrib-python
 subtracao = cv2.bgsegm.createBackgroundSubtractorMOG()
