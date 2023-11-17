@@ -19,11 +19,11 @@
         "vias": [
             {
                 "name": "A",
-                "path": "./data-source/viaA.avi"
+                "path": "./data-source/viaC.mp4"
             },
             {
                 "name": "B",
-                "path": "./data-source/viaB.avi"
+                "path": "./data-source/viaC.mp4"
             },
             {
                 "name": "C",
@@ -31,7 +31,7 @@
             },
             {
                 "name": "D",
-                "path": "./data-source/viaD.mp4"
+                "path": "./data-source/viaC.mp4"
             }
         ]
     }
