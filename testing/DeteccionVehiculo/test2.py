@@ -19,10 +19,13 @@ while True:
     cars = car_cascade.detectMultiScale(gray, 1.1, 1) 
         
     # To draw a rectangle in each cars 
+    carros = 0
     for (x,y,w,h) in cars: 
         cv2.rectangle(frames,(x,y),(x+w,y+h),(0,0,255),2) 
+        carros += 1
+        print("cantidad de carros ", str(carros))
     
-    # Display frames in a window  
+    # Display frames in a window   
     cv2.imshow('video', frames) 
         
     # Wait for Esc key to stop 

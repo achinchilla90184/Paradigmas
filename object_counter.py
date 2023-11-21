@@ -1,74 +1,92 @@
 import numpy as np
 import cv2
-from time import sleep
+import time
 
-#para importar librerias: 
-# pip install opencv-python
-# pip install numpy
-# pip install matplotlib
-# pip install opencv-contrib-python
 
-def pega_centro(x, y, w, h):
-    x1 = int(w / 2)
-    y1 = int(h / 2)
-    cx = x + x1
-    cy = y + y1
-    return cx, cy
+# Colors and Constants
+RED = (0, 0, 255)
+GREEN = (0, 255, 0)
+BLUE = (176, 130, 39)
+ORANGE = (0, 127, 255)
+
+# Create Car Classifier
+xmlCar = './testing/src/cars.xml'
+CLF = cv2.CascadeClassifier(xmlCar)
+FONT = cv2.FONT_HERSHEY_COMPLEX
+
+# Configuration
+offset = 6
+fps = 60
+min_width = 80
+min_height = 80
+linePos = 550
+
+ground_truth1 = 62
+ground_truth2 = 36
+
+
+# get center position of the car
+def center_position(x, y, w, h):
+    center_x = x + (w // 2)
+    center_y = y + (h // 2)
+    return center_x, center_y
 
 
 def objectCounter(path):
-    largura_min = 80
-    altura_min = 80
-    offset = 6
-    pos_linha = 550
+    CAP = cv2.VideoCapture(path)
 
-    # FPS to video
-    delay = 25
-    detec = []
-    carros = 0
-    cap = cv2.VideoCapture(path)
-    # Necesita pip install opencv-contrib-python
-    subtracao = cv2.bgsegm.createBackgroundSubtractorMOG()
+    # Configuration for detection
+    detect_vehicle = []
+    vehicle_counts = 0
 
-    while True:
-        ret, frame1 = cap.read()        
-        tempo = float(1/delay)         
-        sleep(tempo)         
-        grey = cv2.cvtColor(frame1, cv2.COLOR_BGR2GRAY)         
-        blur = cv2.GaussianBlur(grey, (3, 3), 5)          
-        img_sub = subtracao.apply(blur)          
-        dilat = cv2.dilate(img_sub, np.ones((5, 5)))           
-        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))           
+    while CAP.isOpened():
+        duration = 1 / fps
+        time.sleep(duration)
 
-        dilatada = cv2.morphologyEx(dilat, cv2. MORPH_CLOSE, kernel)          
-        dilatada = cv2.morphologyEx(dilatada, cv2. MORPH_CLOSE, kernel)          
+        # Read first frame
+        ret, frame = CAP.read()
+        if frame is None:
+            break
 
-        contorno, h = cv2.findContours(dilatada, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)          
-        cv2.line(frame1, (25, pos_linha), (1200, pos_linha), (176, 130, 39), 2)            
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        blur = cv2.GaussianBlur(gray, (3, 3), 5)
 
-        for(i, c) in enumerate(contorno):            
-            (x, y, w, h) = cv2.boundingRect(c)                
-            validar_contorno = (w >= largura_min) and (h >= altura_min)                 
-            if not validar_contorno:                 
-                continue                      
+        # Pass frame to our car classifier
+        vehicle = CLF.detectMultiScale(
+            blur,
+            scaleFactor=1.2,    # how much the image size is reduced at each image scale
+            minNeighbors=2,     # how many neighbors each candidate rectangle should have to retain it
+            minSize=(min_width, min_height)
+        )
 
-            cv2.rectangle(frame1, (x, y), (x+w, y+h), (0, 255, 0), 2)                    
-            centro = pega_centro(x, y, w, h)                    
-            detec.append(centro)                     
-            cv2.circle(frame1, centro, 4, (0, 0, 255), -1)                    
+        # Count if the car pass this line
+        cv2.line(frame, (25, linePos), (1200, linePos), BLUE, 2)
 
-            for (x, y) in detec:                 
-                if (y < (pos_linha + offset)) and (y > (pos_linha-offset)):                         
-                    carros += 1                          
-                    cv2.line(frame1, (25, pos_linha), (1200, pos_linha), (0, 127, 255), 3)                         
-                    detec.remove((x, y))                        
-                    print("No. of cars detected : " + str(carros))                        
+        # Extract bounding boxes for any car identified
+        for (x, y, w, h) in vehicle:
+            cv2.rectangle(frame, (x, y), (x + w, y + h), GREEN, 2)
 
-        cv2.putText(frame1, "Cantidad Vehiculos : "+str(carros), (320, 70),              cv2.FONT_HERSHEY_COMPLEX, 2, (0, 0, 255), 4)
-        cv2.imshow("Video Original", frame1)
-        cv2.imshow(" Detectar ", dilatada)
+            center = center_position(x, y, w, h)
+            detect_vehicle.append(center)
+            cv2.circle(frame, center, 4, RED, -1)
+
+            # if center of the car pass the counting line
+            for x, y in detect_vehicle:
+                if (y < linePos + offset) and (y > linePos - offset):
+                    cv2.line(frame, (25, linePos), (1200, linePos), ORANGE, 3)
+                    detect_vehicle.remove((x, y))
+                    vehicle_counts += 1
+
+        cv2.putText(
+            frame, f"Car Detected: {vehicle_counts}", (50, 70), FONT, 2, RED, 3, cv2.LINE_AA)
+        cv2.imshow('Vehicles Detection', frame)
+
+        # Press 'ESC' Key to Quit
         if cv2.waitKey(1) == 27:
-            break        
+            break
 
     cv2.destroyAllWindows()
-    cap.release()
+    CAP.release()
+
+    print(str(vehicle_counts))
+    return vehicle_counts

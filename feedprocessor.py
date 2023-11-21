@@ -25,6 +25,7 @@ def loadViaData(config):
         thread = Thread(target=objectCounter, args=(via.path,))
         thread.start()
         threads.append(thread)
+        break
 
     for i, thread in enumerate(threads):
         if thread.is_alive():
