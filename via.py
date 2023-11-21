@@ -1,6 +1,14 @@
 class via:
-    def  __init__(self, name, carsCounter, emergencyVehicle, traffic_light) -> None:
+    def  __init__(self, name, cars_counter, emergency_vehicle, traffic_lights, data_source) -> None:
         self.name = name
-        self.carsCounter = carsCounter
-        self.emergencyVehicle = emergencyVehicle
-        self.traffic_light = traffic_light
+        self.cars_counter = cars_counter
+        self.emergency_vehicle = emergency_vehicle
+        self.traffic_lights = traffic_lights
+        self.data_source = data_source
+
+    def calculateViaValue(self, config):
+        self.name = ""
+
+    def setOpenVia(self, status):
+        for tl in self.traffic_lights:
+            tl.status = status

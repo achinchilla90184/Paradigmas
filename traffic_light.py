@@ -1,4 +1,6 @@
 class traffic_light:
-    def __init__(self, status, via) -> None:
+    def __init__(self, status, name) -> None:
         self.status = status
-        self.via = via
+        self.name = name
+    def changeColor(self, status):
+        self.status = status

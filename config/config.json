@@ -24,14 +24,6 @@
             {
                 "name": "B",
                 "path": "./data-source/viaB.avi"
-            },
-            {
-                "name": "C",
-                "path": "./data-source/viaC.mp4"
-            },
-            {
-                "name": "D",
-                "path": "./data-source/viaD.mp4"
             }
         ]
     }
