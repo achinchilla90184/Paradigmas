@@ -1,9 +1,10 @@
 import numpy as np
 import datetime
+import pathlib
 import cv2
 
 from ultralytics import YOLO
-
+ 
 from deep_sort.deep_sort.tracker import Tracker
 from deep_sort.deep_sort import nn_matching
 from deep_sort.deep_sort.detection import Detection
@@ -15,48 +16,49 @@ from deep_sort.tools import generate_detections as gdet
 # pip install tensorflow
 # git clone git@github.com:python-dontrepeatyourself/deep_sort.git
 
-# define some parameters
-conf_threshold = 0.5
-max_cosine_distance = 0.4
-nn_budget = None
-valid_class_names = ["car", "motorbike", "bus", "truck", "person", "bicycle",]
-counter = 0
-
-# initialize the YOLOv8 model using the default weights
-model = YOLO("yolov8s.pt")
-
-# initialize the deep sort tracker
-model_filename = "./config/mars-small128.pb"
-encoder = gdet.create_box_encoder(model_filename, batch_size=1)
-metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance, nn_budget)
-tracker = Tracker(metric)
-
-# load the COCO class labels the YOLO model was trained on
-classes_path = "./config/coco.names"
-with open(classes_path, "r") as f:
-    class_names = f.read().strip().split("\n")
-
-# create a list of random colors to represent each class
-np.random.seed(42)  # to get the same colors
-colors = np.random.randint(0, 255, size=(len(class_names), 3))  # (80, 3)
-
 def count_objects_detected(path):
+    # define some parameters
+    conf_threshold = 0.5
+    max_cosine_distance = 0.4
+    nn_budget = None
+    valid_class_names = ["car", "motorbike", "bus", "truck"]
+
+    # initialize the YOLOv8 model using the default weights
+    model = YOLO("yolov8s.pt")
+
+    # initialize the deep sort tracker
+    root = str(pathlib.Path(__file__).parent.resolve())
+    model_filename =  root + "/config/mars-small128.pb"
+    encoder = gdet.create_box_encoder(model_filename, batch_size=1)
+    metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance, nn_budget)
+    tracker = Tracker(metric)
+
+    # load the COCO class labels the YOLO model was trained on
+    classes_path = root + "/config/coco.names"
+    with open(classes_path, "r") as f:
+        class_names = f.read().strip().split("\n")
+
+    # create a list of random colors to represent each class
+    np.random.seed(42)  # to get the same colors
+    colors = np.random.randint(0, 255, size=(len(class_names), 3))  # (80, 3)
+
     # Initialize the video capture and the video writer objects
     video_cap = cv2.VideoCapture(path)
+    counter = 0
 
     # loop over the frames
     while True:
         # starter time to computer the fps
         start = datetime.datetime.now()
         ret, frame = video_cap.read()
-        overlay = frame.copy()
-        
-        frame = cv2.addWeighted(overlay, 0.5, frame, 0.5, 0)
 
         # if there is no frame, we have reached the end of the video
         if not ret:
             print("End of the video file...")
             break
+
+        overlay = frame.copy()
+        frame = cv2.addWeighted(overlay, 0.5, frame, 0.5, 0)
 
         ############################################################
         ### Detect the objects in the frame using the YOLO model ###

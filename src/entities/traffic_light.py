@@ -3,5 +3,5 @@ class traffic_light:
         self.status = status
         self.name = name
         self.data_source = data_source
-    def changeColor(self, status):
+    def change_color(self, status):
         self.status = status

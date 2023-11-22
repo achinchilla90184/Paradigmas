@@ -6,9 +6,9 @@ class via:
         self.emergency_vehicle = emergency_vehicle
         self.traffic_lights = traffic_lights
 
-    def calculateViaValue(self, config):
+    def calculate_via_value(self, config):
         self.name = ""
 
-    def setViaStatus(self, status):
+    def set_via_status(self, status):
         for tl in self.traffic_lights:
-            tl.changeColor(status)
+            tl.change_color(status)
