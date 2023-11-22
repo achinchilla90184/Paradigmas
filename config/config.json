@@ -1,19 +1,8 @@
 {
-    "traffic_light": {
-        "lights": [
-            {
-                "color": "green",
-                "status": 2
-            },
-            {
-                "color": "yellow",
-                "status": 1
-            },
-            {
-                "color": "red",
-                "status": 0
-            }
-        ]
+    "traffic_lights": {
+        "green": 2,
+        "yellow": 1,
+        "red": 0
     },
     "data_source": {
         "vias": [

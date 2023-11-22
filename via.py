@@ -1,3 +1,4 @@
+from traffic_light import *
 class via:
     def  __init__(self, name, cars_counter, emergency_vehicle, traffic_lights, data_source) -> None:
         self.name = name
@@ -9,6 +10,6 @@ class via:
     def calculateViaValue(self, config):
         self.name = ""
 
-    def setOpenVia(self, status):
+    def setViaStatus(self, status):
         for tl in self.traffic_lights:
-            tl.status = status
+            tl.changeColor(status)
