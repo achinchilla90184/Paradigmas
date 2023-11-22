@@ -1,7 +1,6 @@
 from config import *
 from traffic_light import *
 from via import *
-from object_counter import *
 from intersectation import *
 
 #devuelve clases con la informacion cargada
