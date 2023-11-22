@@ -1,7 +1,7 @@
-from config import *
-from traffic_light import *
-from via import *
-from intersectation import *
+from src.config.config import *
+from src.entities.traffic_light import *
+from src.entities.via import *
+from src.entities.intersectation import *
 
 #devuelve clases con la informacion cargada
 def loadData(config):

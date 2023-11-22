@@ -1,4 +1,4 @@
-from traffic_light import *
+from src.entities.traffic_light import *
 class via:
     def  __init__(self, name, cars_counter, emergency_vehicle, traffic_lights, data_source) -> None:
         self.name = name

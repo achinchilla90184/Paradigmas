@@ -1,9 +1,9 @@
-from config import *
-from feedprocessor import *
-from via import *
+from src.config.config import *
+from src.feedprocessor import *
+from src.entities.via import *
 
 def main():
-    cfg, err = getConfigOnFile('./config/config.json')
+    cfg, err = getConfigOnFile('./src/config/config.json')
     
     if err != None:
         print(err)
