@@ -12,6 +12,7 @@ from deep_sort.tools import generate_detections as gdet
 # Python 3.9v
 # pip install torch
 # pip install ultralytics
+# pip install tensorflow
 # git clone git@github.com:python-dontrepeatyourself/deep_sort.git
 
 # define some parameters
@@ -25,13 +26,13 @@ counter = 0
 model = YOLO("yolov8s.pt")
 
 # initialize the deep sort tracker
-model_filename = "config/mars-small128.pb"
+model_filename = "./config/mars-small128.pb"
 encoder = gdet.create_box_encoder(model_filename, batch_size=1)
 metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance, nn_budget)
 tracker = Tracker(metric)
 
 # load the COCO class labels the YOLO model was trained on
-classes_path = "config/coco.names"
+classes_path = "./config/coco.names"
 with open(classes_path, "r") as f:
     class_names = f.read().strip().split("\n")
 
