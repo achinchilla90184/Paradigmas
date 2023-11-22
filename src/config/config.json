@@ -8,11 +8,13 @@
         "vias": [
             {
                 "name": "A",
-                "path": "./data-source/test.mp4"
+                "pathA": "./data-source/test.mp4",
+                "pathB": "./data-source/test.mp4"
             },
             {
                 "name": "B",
-                "path": "./data-source/viaB.avi"
+                "pathA": "./data-source/test.mp4",
+                "pathB": "./data-source/test.mp4"
             }
         ]
     }

@@ -11,14 +11,18 @@ def loadData(config):
 
     # Inicializa semaforos y vias
     for viaCfg in config.data_source.vias:
-        tl1 = traffic_light(config.traffic_lights.red, viaCfg.name)
-        tl2 = traffic_light(config.traffic_lights.red, viaCfg.name)
+        tl1 = traffic_light(config.traffic_lights.red, viaCfg.name, viaCfg.pathA)
+        tl2 = traffic_light(config.traffic_lights.red, viaCfg.name, viaCfg.pathB)
         tl.append(tl1)
         tl.append(tl2)
-        v = via(viaCfg.name, 0, False, tl, viaCfg.path)
+        v = via(viaCfg.name, 0, False, tl)
         vias.append(v)
         # vehiculos de emergencia, cuantos autos, peatones
-    # Debe llamar a funcion de input de los videos
+    # for v in vias:
+        # for tl in v.traffic_lights:
+        # Debe llamar a funcion de input de los videos
+        #function(tl.data_soruce)
+
     # Hay ambulancia?
     # Cuantos objetos?
     # Hay peatones?
