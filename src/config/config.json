@@ -9,12 +9,12 @@
             {
                 "name": "A",
                 "pathA": "./data-source/test.mp4",
-                "pathB": "./data-source/test.mp4"
+                "pathB": "./data-source/test1.mp4"
             },
             {
                 "name": "B",
-                "pathA": "./data-source/test.mp4",
-                "pathB": "./data-source/test.mp4"
+                "pathA": "./data-source/test2.mp4",
+                "pathB": "./data-source/test3.mp4"
             }
         ]
     }

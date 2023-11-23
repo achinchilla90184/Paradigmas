@@ -10,7 +10,10 @@ def main():
 
     cfg = config(config_file)
     
-    data = load_data(cfg.config)
-    process_data(cfg.config, data)
+    viasCollection = load_data_source(cfg.config)
+
+    viasCollection = load_analyzed_data(viasCollection)
+    
+    process_data(viasCollection, cfg.config.traffic_lights)
 
 main()
