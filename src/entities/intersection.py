@@ -56,3 +56,7 @@ def showTrafficLights(viasData):
         for tl in v.traffic_lights:
             print("via " + v.name + ". tl " + tl.name + " . status " + str(tl.status) + ". cars counter " + str(v.cars_counter))
             # object_counter += count_objects_detected(tl.data_source)
+            if tl.status == 2:
+                verde()
+            if tl.status == 0:
+                rojo()
